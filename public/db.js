@@ -1,3 +1,5 @@
+const { get } = require("http");
+
 let db;
 const request = indexedDB.open('budget', 1);
 
@@ -26,3 +28,38 @@ function saveRecord(record) {
     store.add(record);
 };
 
+function checkDatabase() {
+    const transaction = db.transaction(['pending'], 'readwrite');
+    const store = transaction.objectStore('pending');
+    const getAllTransactions = store.getAllTransactions();
+
+    getAllTransactions.onsuccess = function () {
+        if (getAllTransactions.result.length > 0) {
+            fetch('/api/transaction/bulk', {
+                method: 'POST',
+                body: JSON.stringify(getAllTransactions.result),
+                headers: {
+                    Accept: 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(() => {
+                // if successful, delete records
+                const transaction = db.transaction(['pending'], 'readwrite');
+                const store = transaction.objectStore('pending');
+                store.clear();
+            });
+        }
+    };
+}
+
+function deletePending() {
+    const transaction = db.transaction(['pending'], 'readwrite');
+    const store = transaction.objectStore('pending');
+    store.clear();
+}
+
+
+// Wait for app to come back online
+window.addEventListener('online', checkDatabase);
