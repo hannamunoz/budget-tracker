@@ -1,7 +1,5 @@
-const { get } = require("http");
-
 let db;
-const request = indexedDB.open('budget', 1);
+const request = indexedDB.open('finance', 1);
 
 request.onupgradeneeded = function (event) {
     const db = event.target.result;
@@ -12,7 +10,7 @@ request.onsuccess = function (event) {
     db = event.target.result;
 
     // Is app online?
-    if (navigator.online) {
+    if (navigator.onLine) {
         checkDatabase();
     }
 };
@@ -31,13 +29,13 @@ function saveRecord(record) {
 function checkDatabase() {
     const transaction = db.transaction(['pending'], 'readwrite');
     const store = transaction.objectStore('pending');
-    const getAllTransactions = store.getAllTransactions();
+    const getAll = store.getAll();
 
-    getAllTransactions.onsuccess = function () {
-        if (getAllTransactions.result.length > 0) {
+    getAll.onsuccess = function () {
+        if (getAll.result.length > 0) {
             fetch('/api/transaction/bulk', {
                 method: 'POST',
-                body: JSON.stringify(getAllTransactions.result),
+                body: JSON.stringify(getAll.result),
                 headers: {
                     Accept: 'application/json, text/plain, */*',
                     'Content-Type': 'application/json'

@@ -1,13 +1,20 @@
 const FILES_TO_CACHE = [
-    '/', '/index.html', 'index.js', '/db.js', 'style.css'
+    '/',
+    '/index.html',
+    'index.js',
+    'manifest.webmanifest',
+    '/icons/icon-192x192.png',
+    '/icons/icon-512x512.png',
+    '/db.js',
+    '/styles.css'
 ];
 
 const CACHE_NAME = 'static-cache-v2';
 const DATA_CACHE_NAME = 'data-cache-v1';
 
 // installation
-self.addEventListener('install', function (event) {
-    event.waitUntil(
+self.addEventListener('install', function (evt) {
+    evt.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
             console.log('Files were successfully pre-cached');
             return cache.addAll(FILES_TO_CACHE);
@@ -18,8 +25,8 @@ self.addEventListener('install', function (event) {
 });
 
 // activation
-self.addEventListener('activate', function (event) {
-    event.waitUntil(
+self.addEventListener('activate', function (evt) {
+    evt.waitUntil(
         caches.keys().then(keyList => {
             return Promise.all(
                 keyList.map(key => {
@@ -36,8 +43,8 @@ self.addEventListener('activate', function (event) {
 });
 
 // fetch data
-self.addEventListener('fetch', evt => {
-    if (evt.request.url.includes('/api/')) {
+self.addEventListener('fetch', function (evt) {
+    if (evt.request.url.includes('/api/transaction')) {
         console.log('[Service Worker] Fetch(data)', evt.request.url);
 
         evt.respondWith(
