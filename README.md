@@ -1,8 +1,7 @@
-![Fitness-Tracker Homepage](./public/images/screenshot1.png)
+![Budget-Tracker](./public/icons/screenshot.png)
 
-![Fitness-Tracker Dashboard](./public/images/screenshot2.png)
 
-# Fitness-Tracker
+# Budget Tracker
 [![GitHub License](https://img.shields.io/badge/License-MIT-blue)](https://opensource.org/licenses/MIT)
 
 ---------------
@@ -10,18 +9,27 @@
 ## *Table of Contents*
 - [Description](#description)
 - [Installation](#installation)
+- [Technologies](#technologies)
 - [Contributing](#contributing)
 - [Author](#author)
 
 ---------------
 
 ## *Description*
-This application is designed to help a user view, create and track their workouts. With the application, the user is able to log multiple exercises in a workout on a given day. The exercises can be tracked by name, type, weight, sets, reps and duration. If the exercise is cardio then the distanced can be tracked. When looking at the application dashboard, the user is able to see their workouts in one place and track their progress.
+This application is designed to help allow a user to easily track their balance whether they are online or offline. When the app is offline, the transactions will be cached until the app is back online. Once back online, the transactions will be applied to the total.
 
 ---------------
 
 ## *Installation*
 npm install
+
+---------------
+
+## *Technologies*
+- Mongoose
+- Express
+- MongoDB
+- jQuery
 
 ---------------
 
